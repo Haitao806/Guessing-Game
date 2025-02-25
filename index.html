@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guessing Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        background: linear-gradient(to bottom, #a1c4fd, #c2e9fb, #d4a5fc);
+        font-family: 'Fredoka', sans-serif;
+        position: relative;
+    }
+
+    h1 {
+        font-size: 50px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .question-box {
+        width: 400px;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .question-box input {
+        width: 80%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        outline: none;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .question-box button {
+        padding: 10px 20px;
+        font-size: 20px;
+        background-color: #da46ad;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-family: 'Fredoka', sans-serif;
+    }
+
+    .question-box button:hover {
+        background-color: #e75050;
+        transform: scale(1.1);
+    }
+
+    .questions {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 400px;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+
+    .questions img {
+        width: 200px;
+        height: 200px;
+        border-radius: 15px;
+        margin: 10px 0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        width: 100%;
+        justify-items: center;
+    }
+
+    .option-button {
+        padding: 10px 15px;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background-color: #ff9800;
+        color: white;
+        transition: 0.3s;
+        width: 100%;
+    }
+
+    .option-button:hover {
+        background-color: #e65100;
+        transform: scale(1.1);
+    }
+
+    .correct {
+        background-color: #4CAF50 !important;
+    }
+
+    .incorrect {
+        background-color: #e74c3c !important;
+    }
+
+    .result-icon {
+        font-size: 24px;
+        margin-top: 10px;
+        display: none;
+    }
+
+    .next-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #f2a1c0; /* 低饱和度粉色 */
+        color: white;
+        border: none;
+        border-radius: 30px; /* 更加圆润 */
+        width: 80px; /* 调整宽度 */
+        height: 40px; /* 调整高度 */
+        font-size: 16px;
+        cursor: pointer;
+        display: none;
+        text-align: center;
+        line-height: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .next-button:hover {
+        background-color: #e68eb0; /* 悬停时颜色加深 */
+        transform: scale(1.1);
+    }
+
+    .question3 
+    {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 400px;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+
+    .question3-img {
+        width: 200px;
+        height: 200px;
+        border-radius: 15px;
+        margin: 10px 0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .question3-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        width: 100%;
+        justify-items: center;
+    }
+    .question4 {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    }
+
+    .question4-img {
+        width: 200px;
+        height: 200px;
+        border-radius: 15px;
+        margin: 10px 0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .question4-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        width: 100%;
+        justify-items: center;
+    }
+
+    .question5 {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    }
+
+    .question5-img {
+        width: 200px;
+        height: 200px;
+        border-radius: 15px;
+        margin: 10px 0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .question5-option {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        width: 100%;
+        justify-items: center;
+    }
+
+    .show-report {
+    width: 100%; 
+    padding: 15px;
+    font-size: 20px;
+    background-color: #ff4d4d; 
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.3s;
+    margin-top: 20px;
+    }
+
+    .show-report:hover {
+        background-color: #e63939;
+        transform: scale(1.05);
+    }
+
+    /* 结果页面 */
+.result-page {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+}
+
+.result-box {
+    width: 400px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.3); 
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.result-page h1 {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+.result-score {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.result-emoji {
+    font-size: 80px;
+    margin-top: 10px;
+}
+
+    </style>
+</head>
+<body>
+    <h1 id="welcome-title">Welcome To My Game!</h1>
+
+<div class="question-box">
+    <input type="text" id="playername" placeholder="Enter Your Name">
+    <button onclick="start()">Let's Go!</button>
+</div>
+
+<!-- Question 1 -->
+<div id="question1" class="questions">
+    <h2>What's this?</h2>
+    <img id="img1" src="P1.jpg" alt="Question 1 image">
+    <div class="options">
+        <button class="option-button" onclick="checkAnswer(this, 'Cat', 'question1', 'P1R')">Cat</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Tiger', 'question1', 'P1R')">Tiger</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Dog', 'question1', 'P1R')">Dog</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Lion', 'question1', 'P1R')">Lion</button>
+    </div>
+    <div id="result-icon1" class="result-icon"></div>
+    <button class="next-button" onclick="nextQuestion('question2')">NEXT</button>
+</div>
+
+<!-- Question 2 -->
+<div id="question2" class="questions">
+    <h2>Who is he?</h2>
+    <img id="img2" src="P2.jpg" alt="Question 2 image">
+    <div class="options">
+        <button class="option-button" onclick="checkAnswer(this, 'Jordan', 'question2', 'P2R')">Jordan</button>
+        <button class="option-button" onclick="checkAnswer(this, 'LeBron', 'question2', 'P2R')">LeBron</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Kobe', 'question2', 'P2R')">Kobe</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Wade', 'question2', 'P2R')">Wade</button>
+    </div>
+    <div id="result-icon2" class="result-icon"></div>
+    <button class="next-button" onclick="nextQuestion('question3')">NEXT</button>
+</div>
+
+ <!-- Question 3 -->
+<div id="question3" class="questions">
+    <h2>Who is he?</h2>
+    <img id="img3" src="P3.jpg" alt="Question 3 image">
+    <div class="question3-options">
+        <button class="option-button" onclick="checkAnswer(this, 'Elon Musk', 'question3', 'P3R')">Elon Musk</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Bill Gates', 'question3', 'P3R')">Bill Gates</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Donald Trump', 'question3', 'P3R')">Donald Trump</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Steve Jobs', 'question3', 'P3R')">Steve Jobs</button>
+    </div>
+    <div id="result-icon3" class="result-icon"></div>
+    <button class="next-button" onclick="nextQuestion('question4')">NEXT</button>
+</div>
+      
+<!-- Question 4 -->
+<div id="question4" class="questions">
+    <h2>What's this?</h2>
+    <img id="img4" src="P4.jpg" alt="Question 4 image">
+    <div class="question4-options">
+        <button class="option-button" onclick="checkAnswer(this, 'Eiffel Tower', 'question4', 'P4')">Eiffel Tower</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Statue of Liberty', 'question4', 'P4')">Statue of Liberty</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Taj Mahal', 'question4', 'P4')">Taj Mahal</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Great Wall', 'question4', 'P4')">Great Wall</button>
+    </div>
+    <div id="result-icon4" class="result-icon"></div>
+    <button class="next-button" onclick="nextQuestion('question5')">NEXT</button>
+</div>
+
+<!-- Question 5 -->
+<div id="question5" class="questions">
+    <h2>What's this?</h2>
+    <img id="img5" src="P5.jpg" alt="Question 5 image">
+    <div class="question5-option">
+        <button class="option-button" onclick="checkAnswer(this, 'Chicken', 'question5', 'P5')">Chicken</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Duck', 'question5', 'P5')">Duck</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Flamingo', 'question5', 'P5')">Flamingo</button>
+        <button class="option-button" onclick="checkAnswer(this, 'Phoenix', 'question5', 'P5')">Phoenix</button>
+    </div>
+    <div id="result-icon5" class="result-icon"></div>
+    <button id="show-report" class="show-report" onclick="showReport()" style="display: none;">Show My Report!</button>
+</div>
+
+    <!-- 结果页面 -->
+<div id="result-page" class="result-page">
+    <div class="result-box">
+        <h1 id="result-message"></h1>
+        <p id="result-score" class="result-score"></p>
+        <div id="result-emoji" class="result-emoji"></div>
+    </div>
+</div>
+
+</div>
+
+    <script>
+    let score = 0;
+const answers = { question1: "Cat", question2: "LeBron", question3: "Elon Musk" };
+
+function start() {
+    document.getElementById('welcome-title').style.display = 'none'; // 隐藏大标题
+    document.querySelector('.question-box').style.display = 'none'; // 隐藏输入框
+    document.getElementById('question1').style.display = 'flex'; // 显示第一题
+}
+
+function checkAnswer(button, answer, question, newImg) {
+    // 禁用所有按钮，防止重复点击
+    document.querySelectorAll(`#${question} .option-button`).forEach(btn => btn.disabled = true);
+
+    const resultIcon = document.getElementById(`result-icon${question.slice(-1)}`);
+    if (answer === answers[question]) {
+        score += 20;
+        resultIcon.innerHTML = "✅ +20";
+        resultIcon.style.color = "green";
+        button.classList.add("correct");
+    } else {
+        resultIcon.innerHTML = "❌ +0";
+        resultIcon.style.color = "red";
+        button.classList.add("incorrect");
+
+        // 找到正确答案并标绿
+        document.querySelectorAll(`#${question} .option-button`).forEach(btn => {
+            if (btn.innerText === answers[question]) {
+                btn.classList.add("correct");
+            }
+        });
+    }
+
+    // 更新图片
+    document.getElementById(`img${question.slice(-1)}`).src = newImg + ".jpg";
+    resultIcon.style.display = "block";
+
+    let nextButton = document.querySelector(`#${question} .next-button`);
+    if (nextButton) {
+        nextButton.style.display = "block";
+    }
+}
+
+
+function nextQuestion(next) {
+    // 隐藏所有题目
+    document.querySelectorAll('.questions').forEach(q => q.style.display = 'none');
+    // 显示下一个题目
+    document.getElementById(next).style.display = 'flex';
+}
+
+// 添加 Question 4 正确答案
+answers["question4"] = "Great Wall";
+
+function checkAnswer(button, answer, question, newImg) {
+    // 禁用所有按钮，防止重复点击
+    document.querySelectorAll(`#${question} .option-button`).forEach(btn => btn.disabled = true);
+
+    const resultIcon = document.getElementById(`result-icon${question.slice(-1)}`);
+    if (answer === answers[question]) {
+        score += 20;
+        resultIcon.innerHTML = "✅ +20";
+        resultIcon.style.color = "green";
+        button.classList.add("correct");
+    } else {
+        resultIcon.innerHTML = "❌ +0";
+        resultIcon.style.color = "red";
+        button.classList.add("incorrect");
+
+        // 找到正确答案并标绿
+        document.querySelectorAll(`#${question} .option-button`).forEach(btn => {
+            if (btn.innerText === answers[question]) {
+                btn.classList.add("correct");
+            }
+        });
+    }
+
+    // **第四题没有 P4R，所以图片不变**
+    if (question !== "question4") {
+        document.getElementById(`img${question.slice(-1)}`).src = newImg + ".jpg";
+    }
+
+    resultIcon.style.display = "block";
+    let nextButton = document.querySelector(`#${question} .next-button`);
+    if (nextButton) {
+        nextButton.style.display = "block";
+    }
+}
+// 添加 Question 5 正确答案
+answers["question5"] = "Phoenix";
+
+function checkAnswer(button, answer, question, newImg) {
+    // 禁用所有按钮，防止重复点击
+    document.querySelectorAll(`#${question} .option-button`).forEach(btn => btn.disabled = true);
+
+    const resultIcon = document.getElementById(`result-icon${question.slice(-1)}`);
+    if (answer === answers[question]) {
+        score += 20;
+        resultIcon.innerHTML = "✅ +20";
+        resultIcon.style.color = "green";
+        button.classList.add("correct");
+    } else {
+        resultIcon.innerHTML = "❌ +0";
+        resultIcon.style.color = "red";
+        button.classList.add("incorrect");
+
+        // 找到正确答案并标绿
+        document.querySelectorAll(`#${question} .option-button`).forEach(btn => {
+            if (btn.innerText === answers[question]) {
+                btn.classList.add("correct");
+            }
+        });
+    }
+
+    // **Question 5 没有 P5R，所以图片不变**
+    if (question !== "question5") {
+        document.getElementById(`img${question.slice(-1)}`).src = newImg + ".jpg";
+    }
+
+    resultIcon.style.display = "block";
+    let nextButton = document.querySelector(`#${question} .next-button`);
+    if (nextButton) {
+        nextButton.style.display = "block";
+    }
+}
+function checkAnswer(button, answer, question, newImg) {
+    // 禁用所有按钮，防止重复点击
+    document.querySelectorAll(`#${question} .option-button`).forEach(btn => btn.disabled = true);
+
+    const resultIcon = document.getElementById(`result-icon${question.slice(-1)}`);
+    if (answer === answers[question]) {
+        score += 20;
+        resultIcon.innerHTML = "✅ +20";
+        resultIcon.style.color = "green";
+        button.classList.add("correct");
+    } else {
+        resultIcon.innerHTML = "❌ +0";
+        resultIcon.style.color = "red";
+        button.classList.add("incorrect");
+
+        // 找到正确答案并标绿
+        document.querySelectorAll(`#${question} .option-button`).forEach(btn => {
+            if (btn.innerText === answers[question]) {
+                btn.classList.add("correct");
+            }
+        });
+    }
+
+    // **Question 5 没有 P5R，所以图片不变**
+    if (question !== "question5") {
+        document.getElementById(`img${question.slice(-1)}`).src = newImg + ".jpg";
+    }
+
+    resultIcon.style.display = "block";
+    let nextButton = document.querySelector(`#${question} .next-button`);
+    if (nextButton) {
+        nextButton.style.display = "block";
+    }
+
+    // 如果是第五题，显示 "Show My Report" 按钮
+    if (question === "question5") {
+        document.getElementById("show-report").style.display = "block";
+    }
+}
+
+function showReport() {
+    // 隐藏所有问题
+    document.querySelectorAll('.questions').forEach(q => q.style.display = 'none');
+
+    // 获取玩家姓名
+    let playerName = document.getElementById("playername").value || "Player";
+
+    // 设置结果页面
+    document.getElementById("result-message").innerText = `Congratulations, ${playerName}!`;
+    document.getElementById("result-score").innerText = `Your Score: ${score} / 100`;
+
+    // 根据得分选择表情
+    let emoji = score >= 60 ? "😊" : "😡";
+    document.getElementById("result-emoji").innerText = emoji;
+
+    // 显示结果页面
+    document.getElementById("result-page").style.display = "flex";
+}
+
+
+    </script>
+</body>
+</html>
